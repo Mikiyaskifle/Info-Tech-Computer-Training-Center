@@ -1,9 +1,9 @@
 # Info-Tech Computer Training Center
 
-A full-stack production-ready website for Info-Tech Computer Training Center.
+A production-ready frontend-only website for Info-Tech Computer Training Center.
 
 **General Manager:** Andualem Kebebe  
-**Stack:** React (Vite) + Node.js/Express | Tailwind CSS | Framer Motion
+**Stack:** React (Vite) | Tailwind CSS | Framer Motion | EmailJS
 
 ---
 
@@ -11,17 +11,12 @@ A full-stack production-ready website for Info-Tech Computer Training Center.
 
 ```
 /
-├── client/          # React frontend (Vite)
-│   ├── src/
-│   │   ├── components/   # Navbar, Hero, About, Courses, Contact, Footer, ScrollToTop
-│   │   ├── services/     # contactApi.js (fetch wrapper)
-│   │   └── App.jsx
-│   └── package.json
-│
-└── server/          # Node.js + Express backend
-    ├── routes/
-    │   └── contact.js    # POST /api/contact
-    ├── server.js
+└── client/
+    ├── src/
+    │   ├── components/     # Navbar, Hero, About, Courses, Contact, Footer, ScrollToTop
+    │   ├── services/
+    │   │   └── contactApi.js   # EmailJS + Telegram (no backend needed)
+    │   └── App.jsx
     ├── .env.example
     └── package.json
 ```
@@ -30,57 +25,44 @@ A full-stack production-ready website for Info-Tech Computer Training Center.
 
 ## Quick Start
 
-### 1. Setup the Backend
-
-```bash
-cd server
-cp .env.example .env
-# Fill in your credentials in .env
-npm install
-npm run dev
-```
-
-### 2. Setup the Frontend
-
 ```bash
 cd client
+cp .env.example .env        # fill in your credentials
 npm install
 npm run dev
 ```
 
-Open **http://localhost:5173** in your browser.
+Open **http://localhost:5173**
 
 ---
 
-## Environment Variables (server/.env)
+## Environment Variables (`client/.env`)
 
 | Variable | Description |
 |---|---|
-| `PORT` | Server port (default: 5000) |
-| `CLIENT_ORIGIN` | Frontend URL for CORS |
-| `EMAIL_USER` | Your Gmail address |
-| `EMAIL_PASS` | Gmail App Password (not your real password) |
-| `TELEGRAM_BOT_TOKEN` | Telegram bot token from @BotFather |
-| `TELEGRAM_CHAT_ID` | Your Telegram chat ID from @userinfobot |
-
-### Getting a Gmail App Password
-1. Enable 2-Step Verification on your Google account
-2. Go to https://myaccount.google.com/apppasswords
-3. Generate a password for "Mail" → use it as `EMAIL_PASS`
-
-### Getting Telegram Credentials
-1. Message **@BotFather** on Telegram → `/newbot` → copy the token
-2. Message **@userinfobot** → copy your chat ID
+| `VITE_EMAILJS_SERVICE_ID` | EmailJS service ID |
+| `VITE_EMAILJS_TEMPLATE_ID` | EmailJS template ID |
+| `VITE_EMAILJS_PUBLIC_KEY` | EmailJS public key |
+| `VITE_TELEGRAM_BOT_TOKEN` | Telegram bot token from @BotFather |
+| `VITE_TELEGRAM_CHAT_ID` | Your chat ID from @userinfobot |
 
 ---
 
-## Features
+## Setting Up EmailJS (Free — No Backend)
 
-- Dark mode UI with blue accent theme
-- Fully responsive (mobile-first)
-- Framer Motion animations throughout
-- Contact form with full validation
-- Email notifications via Nodemailer (Gmail)
-- Telegram bot notifications
-- Rate limiting on API
-- Scroll-to-top button
+1. Sign up at **https://www.emailjs.com** (free tier: 200 emails/month)
+2. **Add a Service** → connect your Gmail
+3. **Create a Template** — use these variables in the template body:
+   ```
+   From: {{from_name}} ({{from_email}})
+   Phone: {{phone}}
+   Course: {{course}}
+   Message: {{message}}
+   ```
+4. Copy your **Service ID**, **Template ID**, and **Public Key** into `client/.env`
+
+## Setting Up Telegram Bot (Optional)
+
+1. Message **@BotFather** on Telegram → `/newbot` → copy the token
+2. Message **@userinfobot** → copy your chat ID
+3. Add both to `client/.env`
